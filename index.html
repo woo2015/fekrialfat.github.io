@@ -6,12 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fekri2020 Alfat - Blog & YouTube</title>
 
-  <!-- Tailwind CSS CDN untuk styling cepat (jika CDN gagal, CSS kustom tetap bekerja) -->
+  <!-- Tailwind CSS CDN (tetap) -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
+  <!-- Font (opsional tapi bikin mirip referensi) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (wajib untuk icon) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
-    /* ===== CSS Kustom ===== */
-    /* Warna dasar tema biru-putih agar tetap bagus walau Tailwind gagal dimuat */
+    /* =========================================================
+       ===== CSS LAMA (tetap) + penyesuaian gaya referensi =====
+       ========================================================= */
+
     :root {
       --blue-600: #2563eb;
       --blue-700: #1d4ed8;
@@ -21,25 +31,32 @@
       --slate-200: #e2e8f0;
       --slate-50: #f8fafc;
       --white: #ffffff;
+
+      /* warna mirip referensi */
+      --ref-primary: #046bd2;
+      --ref-primary-2: #045cb4;
+      --ref-accent: #f59e0b; /* orange */
+      --header-h: 80px;
     }
 
-    /* Mengatur font utama agar modern dan mudah dibaca */
     body {
       font-family: "Inter", system-ui, -apple-system, sans-serif;
       background: var(--slate-50);
       color: var(--slate-800);
       margin: 0;
-      scroll-behavior: smooth; /* mengikuti referensi */
+      scroll-behavior: smooth;
     }
 
-    /* Container utama agar lebar konten rapi di tengah */
+    /* biar anchor gak ketutup header fixed */
+    header[id], section[id] { scroll-margin-top: calc(var(--header-h) + 18px); }
+
     .container {
       max-width: 1152px;
       margin: 0 auto;
       padding: 0 24px;
     }
 
-    /* Kartu konten agar tampak seperti blog profesional */
+    /* Kartu konten artikel (LAMA - tetap dipakai di data source / modal) */
     .card {
       background: var(--white);
       border: 1px solid var(--slate-200);
@@ -53,7 +70,7 @@
       box-shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
     }
 
-    /* Tombol biru untuk Subscribe */
+    /* Tombol biru (LAMA - tetap) */
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -66,34 +83,23 @@
       font-weight: 600;
       transition: transform 0.2s ease, background 0.2s ease;
     }
-
-    /* Efek hover tombol */
     .btn-primary:hover {
       background: var(--blue-700);
       transform: translateY(-1px);
     }
 
-    /* Animasi masuk (fade + slide) untuk teks/elemen */
+    /* Animasi masuk (LAMA - tetap) */
     .fade-slide-in {
-      opacity: 0; /* Mulai transparan */
-      transform: translateY(16px); /* Mulai sedikit di bawah */
-      transition: opacity 0.9s ease, transform 0.9s ease; /* Transisi halus */
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
     }
-
-    /* Kelas aktif saat animasi ditampilkan */
     .fade-slide-in.show {
-      opacity: 1; /* Tampilkan elemen */
-      transform: translateY(0); /* Kembali ke posisi normal */
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* Grid sederhana jika Tailwind tidak tersedia */
-    .grid-fallback {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 24px;
-    }
-
-    /* Modal overlay untuk menampilkan blog panjang */
+    /* Modal (LAMA - tetap) */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -102,11 +108,9 @@
       align-items: center;
       justify-content: center;
       padding: 24px;
-      z-index: 100;
-      backdrop-filter: blur(4px); /* mengikuti referensi */
+      z-index: 1000;
+      backdrop-filter: blur(4px);
     }
-
-    /* Konten modal */
     .modal-content {
       background: var(--white);
       border-radius: 20px;
@@ -118,8 +122,6 @@
       overflow-y: auto;
       position: relative;
     }
-
-    /* Tombol close modal */
     .modal-close {
       background: var(--slate-200);
       border: none;
@@ -129,81 +131,915 @@
       cursor: pointer;
       transition: background 0.2s ease;
     }
-    .modal-close:hover {
-      background: #cbd5e1;
+    .modal-close:hover { background: #cbd5e1; }
+
+    /* =========================================================
+       ===== HEADER (mirip referensi Astra) + menu mobile =====
+       ========================================================= */
+    .site-header{
+      position: fixed;
+      top: 0;
+      inset-inline: 0;
+      height: var(--header-h);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background-color .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
+    .site-header.is-scrolled{
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+      border-bottom-color: rgba(226,232,240,.9);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, .06);
+    }
+    .site-header__row{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--slate-900);
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    .brand-badge{
+      background: var(--ref-primary);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .nav-desktop{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      color: var(--slate-600);
+      font-weight: 800;
+      font-size: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-desktop a{
+      text-decoration: none;
+      color: inherit;
+      padding: 10px 12px;
+      border-radius: 999px;
+      transition: color .15s ease, background .15s ease;
+    }
+    .nav-desktop a:hover{
+      color: var(--ref-primary);
+      background: rgba(4,107,210,.08);
+    }
+    .nav-toggle{
+      display: none;
+      border: 1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.65);
+      color: var(--ref-primary);
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .mobile-drawer{
+      position: fixed;
+      top: var(--header-h);
+      right: 0;
+      left: 0;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid rgba(226,232,240,.9);
+      box-shadow: 0 20px 40px rgba(15,23,42,.08);
+      display: none;
+      z-index: 998;
+    }
+    .mobile-drawer ul{
+      list-style: none;
+      margin: 0;
+      padding: 14px 18px 18px;
+      display: grid;
+      gap: 6px;
+    }
+    .mobile-drawer a{
+      display: block;
+      padding: 12px 12px;
+      border-radius: 14px;
+      text-decoration: none;
+      color: var(--slate-700);
+      font-weight: 900;
+    }
+    .mobile-drawer a:hover{
+      background: rgba(4,107,210,.08);
+      color: var(--ref-primary);
+    }
+    body.nav-open .mobile-drawer { display: block; }
+
+    @media (max-width: 921px){
+      .nav-desktop { display: none; }
+      .nav-toggle { display: inline-flex; align-items: center; gap: 10px; }
+    }
+
+    /* =========================================================
+       ===== HERO (YouTube background seperti referensi) =====
+       ========================================================= */
+    .hero{
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 0 24px;
+      padding-top: var(--header-h);
+      overflow: hidden;
+      background: #0b1220;
+    }
+    .hero-video--youtube{
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .hero-video--youtube iframe{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 56.25vw;
+      min-width: 177.78vh;
+      min-height: 100vh;
+      transform: translate(-50%, -50%);
+      border: 0;
+      pointer-events: none;
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .hero-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(60% 60% at 50% 20%, rgba(255,255,255,.08) 0%, rgba(255,255,255,0) 60%),
+        linear-gradient(to bottom, rgba(0,0,0,.30) 0%, rgba(0,0,0,.60) 70%, rgba(0,0,0,.66) 100%);
+    }
+    .hero-content{
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      text-align: center;
+      color: #fff;
+      padding: 48px 0 64px;
+    }
+    .hero-subtitle{
+      margin: 0 0 12px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      color: rgba(255,255,255,.92);
+      font-size: clamp(14px, 2.1vw, 18px);
+    }
+    .hero h1{
+      color: #fff !important;
+      text-shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    .hero p{
+      color: rgba(255,255,255,.86);
+      text-shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+    .hero .btn-primary{
+      background: var(--ref-primary);
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-weight: 900;
+    }
+    .hero .btn-primary:hover{ background: var(--ref-primary-2); }
+
+    .hero .btn-secondary{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,.45);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 900;
+      background: rgba(255,255,255,.10);
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    }
+    .hero .btn-secondary:hover{
+      background: rgba(255,255,255,.16);
+      border-color: rgba(255,255,255,.65);
+      transform: translateY(-1px);
+    }
+
+    .slider-indicators{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 26px;
+      z-index: 2;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .indicator{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.45);
+    }
+    .indicator.active{
+      width: 30px;
+      background: #fff;
+    }
+
+    /* =========================================================
+       ===== KOMPETENSI KELULUSAN (model gambar) =====
+       (rename class biar gak bentrok dengan .card lama)
+       ========================================================= */
+    .pk-section{
+      padding: 78px 0 10px;
+      background: #fff;
+    }
+    .pk-header{
+      text-align: center;
+      margin-bottom: 34px;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+    .pk-title{
+  margin: 0;
+  font-size: clamp(34px, 4vw, 56px);
+  font-weight: 900;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--ref-primary); /* biru */
+  font-style: normal;        /* tidak miring */
+}
+    .pk-subtitle{
+      margin: 12px 0 0;
+      max-width: 1152px;
+      margin-inline: auto;
+      padding-inline: 24px;
+      text-align: left;
+      font-size: 22px;
+      font-weight: 800;
+      color: #6b7280;
+    }
+    .pk-grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 26px;
+      margin-top: 18px;
+    }
+    @media (max-width: 1024px){
+      .pk-grid{ grid-template-columns: 1fr; }
+    }
+    .pk-card{
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      min-height: 290px;
+      background: #fff;
+      border: 1px solid rgba(226,232,240,.9);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, .10);
+    }
+    .pk-card__bg{
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+    }
+    .pk-card__fade{
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,.98) 55%, rgba(255,255,255,0) 85%);
+    }
+    .pk-card::before{
+      content:"";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 6px;
+      background: var(--pk-accent, var(--ref-accent));
+      z-index: 2;
+    }
+    .pk-card__content{
+      position: relative;
+      z-index: 3;
+      padding: 34px 34px;
+      max-width: 72%;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+    .pk-card__icon{
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #111827;
+      font-weight: 900;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    .pk-card__icon i{
+      font-size: 28px;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(15, 23, 42, .06);
+    }
+    .pk-card__body p{
+      margin: 0;
+      color: #6b7280;
+      font-size: 18px;
+      line-height: 1.65;
+    }
+/* IDENTITAS KAMI - tanpa gambar/ikon */
+.pk-noimg .pk-card__bg,
+.pk-noimg .pk-card__fade { 
+  display: none !important; 
+}
+
+.pk-noimg .pk-card__content { 
+  max-width: 100% !important; 
+}
+
+.pk-noimg .pk-card__icon{
+  margin-bottom: 12px;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.pk-noimg .pk-card__icon i { 
+  display: none !important; 
+}
+
+.pk-noimg .pk-card__icon i{ display: none !important; }
+    @media (max-width: 1024px){
+      .pk-card__content{ max-width: 100%; }
+      .pk-card__fade{
+        background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,.97) 62%, rgba(255,255,255,.35) 100%);
+      }
+    }
+
+    /* =========================================================
+       ===== PROGRAM HERO (background image + card overlay) =====
+       ========================================================= */
+    .programs-section{
+      padding: 26px 0 10px;
+      background: #fff;
+    }
+    .program-hero{
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, .10);
+      border: 1px solid rgba(226,232,240,.9);
+      margin: 26px 0;
+      background: #0b1220;
+    }
+    .program-hero-bg{
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+    }
+    .program-hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(to right, rgba(0,0,0,.10) 0%, rgba(0,0,0,.25) 48%, rgba(0,0,0,.35) 100%);
+      z-index: 1;
+    }
+    .program-hero-card{
+      position: relative;
+      z-index: 2;
+      width: min(640px, 92%);
+      background: #fff;
+      border-radius: 18px;
+      margin: 64px 40px 40px 40px;
+      padding: 34px 34px 26px;
+      border-top: 6px solid var(--ref-accent);
+      box-shadow: 0 22px 55px rgba(15, 23, 42, 0.16);
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+    .program-hero-card.right{ margin-left: auto; }
+
+    .program-hero-card .hero-title{
+      margin: 0;
+      font-size: clamp(26px, 2.3vw, 34px);
+      font-weight: 900;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      color: #111827;
+    }
+    .program-hero-card .hero-title span{
+      display: block;
+      color: var(--ref-accent);
+      font-weight: 500;
+    }
+    .program-hero-card .hero-desc{
+      margin: 14px 0 0;
+      color: #6b7280;
+      line-height: 1.75;
+      font-size: 16px;
+    }
+    .hero-news-list{
+      margin-top: 22px;
+      display: grid;
+      gap: 14px;
+    }
+    .hero-news-item{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 14px;
+      padding-top: 14px;
+      border-top: 1px solid #eef2f7;
+      color: #1f2937;
+      font-weight: 900;
+    }
+    .hero-news-item a{
+      color: inherit;
+      text-decoration: none;
+    }
+    .hero-news-item a:hover{ text-decoration: underline; }
+    .hero-news-arrow{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      background: rgba(245,158,11,.15);
+      color: var(--ref-accent);
+      flex: 0 0 auto;
+    }
+    @media (max-width: 1024px){
+      .program-hero-card,
+      .program-hero-card.right{
+        margin: 22px auto;
+      }
+    }
+
+/* FILOSOFI LOGO - versi tanpa gambar */
+.program-hero.noimg{
+  min-height: auto;
+  background: #f8fafc;
+}
+
+.program-hero.noimg::before{ display: none; }
+.program-hero.noimg .program-hero-bg{ display: none !important; }
+
+.program-hero.noimg .program-hero-card,
+.program-hero.noimg .program-hero-card.right{
+  margin: 28px auto;
+  width: min(820px, 94%);
+}
+
+    /* =========================================================
+       ===== DALAS NEWS (model NEWS 4 gambar + overlay) =====
+       ========================================================= */
+    .dalas-news-section{
+      padding: 60px 0;
+      background: #fff;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+    .dalas-news-section .section-header{
+      display:flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 10px;
+    }
+    .dalas-news-section .section-title{
+  margin: 0;
+  font-size: 40px;
+  font-weight: 900;
+  color: var(--ref-primary); /* FEKRI = biru */
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  font-style: italic;
+}
+.dalas-news-section .section-title span{
+  color: #111827; /* NEWS. = hitam */
+  font-style: italic;
+}
+    .dalas-news-section .section-title span{
+      color: var(--ref-accent);
+      font-style: italic;
+    }
+    .dalas-news-section .see-more{
+      text-decoration:none;
+      color:#111827;
+      font-weight: 900;
+      font-size: 14px;
+      text-transform: uppercase;
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+    .dalas-news-section .see-more i{ color: var(--ref-accent); }
+
+    /* teks lama tetap dipertahankan */
+    .dalas-news-section .legacy-blog-title{
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+      color: #334155;
+    }
+    .dalas-news-section .legacy-blog-desc{
+      margin: 6px 0 26px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .dalas-news-section .news-grid{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+    @media (max-width: 1024px){
+      .dalas-news-section .news-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 640px){
+      .dalas-news-section .news-grid{ grid-template-columns: 1fr; }
+    }
+    .dalas-news-section .news-item{
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(15,23,42,.10);
+      background: #0b1220;
+      min-height: 240px;
+      transform: translateY(0);
+      transition: transform .25s ease;
+    }
+    .dalas-news-section .news-item:hover{ transform: translateY(-4px); }
+
+    .dalas-news-section .news-image{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.02);
+      transition: transform .35s ease, filter .35s ease;
+    }
+    .dalas-news-section .news-item:hover .news-image{
+      transform: scale(1.08);
+      filter: brightness(.75);
+    }
+
+    .dalas-news-section .news-overlay{
+      position:absolute;
+      inset:0;
+      padding: 22px;
+      display:flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: linear-gradient(to top, rgba(0,0,0,.86) 10%, rgba(0,0,0,0) 80%);
+      color:#fff;
+    }
+    .dalas-news-section .news-date{
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      opacity: .95;
+      width: fit-content;
+      border-bottom: 2px solid rgba(255,255,255,.45);
+      padding-bottom: 6px;
+    }
+    .dalas-news-section .news-title{
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.25;
+      text-shadow: 0 8px 18px rgba(0,0,0,.35);
+    }
+    .dalas-news-section .news-description{
+      margin: 10px 0 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(255,255,255,.88);
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: all .35s ease;
+    }
+    .dalas-news-section .news-item:hover .news-description{
+      max-height: 120px;
+      opacity: 1;
+    }
+    .dalas-news-section .open-article{
+      margin-top: 12px;
+      align-self: flex-start;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.35);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .dalas-news-section .open-article:hover{
+      background: rgba(255,255,255,.18);
+      border-color: rgba(255,255,255,.55);
+    }
+
+    /* =========================================================
+       ===== Reveal animation (untuk section yang kamu minta) =====
+       ========================================================= */
+    .reveal{
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all .9s ease;
+    }
+    .reveal.from-left{ transform: translateX(-30px); }
+    .reveal.from-right{ transform: translateX(30px); }
+    .reveal.active{
+      opacity: 1;
+      transform: translate(0,0);
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      * { scroll-behavior: auto !important; }
+      .fade-slide-in, .reveal { transition: none !important; }
+    }
+
+/* FEKRINEWS - berita tanpa gambar */
+.noimg-news .news-item{
+  min-height: auto;
+  background: #fff;
+  border: 1px solid rgba(226,232,240,.9);
+  box-shadow: 0 10px 28px rgba(15,23,42,.08);
+}
+
+.noimg-news .news-image{ display: none !important; }
+
+.noimg-news .news-overlay{
+  position: relative;
+  inset: auto;
+  background: none;
+  color: #111827;
+  padding: 18px 18px 20px;
+}
+
+.noimg-news .news-date{
+  color: var(--ref-primary);
+  border-bottom-color: rgba(4,107,210,.35);
+}
+
+.noimg-news .news-title{
+  color: #111827;
+  text-shadow: none;
+}
+
+.noimg-news .news-description{
+  color: #475569;
+  max-height: none;
+  opacity: 1;
+  margin-top: 10px;
+}
+
+.noimg-news .open-article{
+  background: rgba(4,107,210,.08);
+  border: 1px solid rgba(4,107,210,.20);
+  color: var(--ref-primary);
+}
+.noimg-news .open-article:hover{
+  background: rgba(4,107,210,.12);
+  border-color: rgba(4,107,210,.30);
+}
+
+/* Background Hero jadi PUTIH */
+.hero {
+  background: #ffffff !important;
+  min-height: 70vh; /* tingginya disesuaikan, gak perlu 100vh kalau gak ada video */
+}
+
+/* Teks di Hero jadi GELAP biar kelihatan */
+.hero h1 {
+  color: #111827 !important; /* hitam/abu gelap */
+  text-shadow: none !important;
+}
+.hero p {
+  color: #475569 !important; /* abu-abu */
+  text-shadow: none !important;
+}
+.hero-subtitle {
+  color: var(--ref-primary) !important; /* biru */
+}
+
+/* Tombol "Komunitas" diubah biar kelihatan di putih */
+.hero .btn-secondary {
+  color: #111827;
+  border: 2px solid #111827;
+  background: rgba(0,0,0,0.05);
+}
+.hero .btn-secondary:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+/* Indikator titik-titik di bawah (kalau mau kelihatan) */
+.slider-indicators .indicator {
+  background: rgba(0,0,0,0.2);
+}
+.slider-indicators .indicator.active {
+  background: var(--ref-primary);
+}
   </style>
 </head>
 
 <body class="bg-slate-50 text-slate-800">
-  <!-- ===== Navigasi Utama ===== -->
-  <!-- Nav berisi menu agar mudah pindah antar section -->
-  <nav class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
-    <div class="container flex flex-wrap items-center justify-between gap-4 py-4">
-      <!-- Brand / Nama Channel (teks asli tidak dihilangkan) -->
-      <a href="#home" class="text-xl font-bold text-slate-900 flex items-center gap-2">
-        <span class="bg-blue-600 text-white px-2 py-1 rounded-lg text-sm leading-none">FA</span>
-        Fekri2020 Alfat
+  <!-- ===== HEADER / NAV (mirip referensi) ===== -->
+  <header class="site-header" id="siteHeader">
+    <div class="container site-header__row">
+      <a href="#home" class="brand">
+        <span class="brand-badge">FA</span>
+        <span>Fekri2020 Alfat</span>
       </a>
 
-      <!-- Menu navigasi dengan banyak item -->
-      <ul class="flex flex-wrap items-center gap-6 text-sm font-semibold text-slate-600">
-        <li><a href="#home" class="hover:text-blue-600 transition">Home</a></li>
-        <li><a href="#blog" class="hover:text-blue-600 transition">Berita</a></li>
-        <li><a href="#community" class="hover:text-blue-600 transition">Komunitas</a></li>
-        <li><a href="#about" class="hover:text-blue-600 transition">Tentang</a></li>
-        <li><a href="#faq" class="hover:text-blue-600 transition">FAQ</a></li>
+      <!-- Menu desktop (teks lama tetap + ditambah menu baru tanpa menghapus yang lama) -->
+      <ul class="nav-desktop" id="desktopNav">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#blog">Berita</a></li>
+        <li><a href="#community">Komunitas</a></li>
+        <li><a href="#about">Tentang</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#kompetensi">Kompetensi</a></li>
+        <li><a href="#programs">Program</a></li>
       </ul>
+
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileDrawer">
+        Menu <span aria-hidden="true">☰</span>
+      </button>
     </div>
-  </nav>
 
-  <!-- ===== Header / Hero ===== -->
-  <!-- Header berfungsi sebagai tampilan pertama (hero) -->
-  <header id="home" class="min-h-screen flex items-center justify-center px-6 pt-24">
-    <div class="max-w-3xl text-center space-y-8">
-      <!-- Judul besar channel (teks asli tidak dihilangkan) -->
-      <h1 class="fade-slide-in text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-slate-900">
-        Berita Fekri2020 Alfat
-      </h1>
-
-      <!-- Deskripsi singkat channel (teks asli tidak dihilangkan) -->
-      <p class="fade-slide-in text-lg sm:text-xl text-slate-600 leading-relaxed">
-        Selamat datang di website berita Fekri2020 Alfat! Di sini kamu bisa menemukan berbagai
-        berita seputar Fekri2020 Alfat. Baca sekarang dan jangan sampai ketinggalan berita terbaru yang seru dan inspiratif di satu website!.
-      </p>
-
-      <!-- Tombol Info Selengkapnya (CTA) (teks asli tidak dihilangkan) -->
-      <div class="fade-slide-in flex flex-wrap justify-center gap-4">
-        <a href="#blog" class="btn-primary">
-          Info Selengkapnya
-        </a>
-
-        <!-- Tambahan tombol (tidak menghapus teks lama) -->
-        <a href="#community" class="inline-flex items-center gap-2 px-7 py-3 rounded-full border border-slate-300 font-semibold hover:bg-slate-100 transition">
-          Komunitas
-        </a>
-      </div>
-    </div>
+    <!-- Drawer mobile -->
+    <nav class="mobile-drawer" id="mobileDrawer" aria-label="Menu Mobile">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#blog">Berita</a></li>
+        <li><a href="#community">Komunitas</a></li>
+        <li><a href="#about">Tentang</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#kompetensi">Kompetensi</a></li>
+        <li><a href="#programs">Program</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <!-- ===== Konten Utama ===== -->
-  <main class="container pb-24 space-y-24">
-    <!-- ===== Blog / Berita ===== -->
-    <section id="blog" class="space-y-8">
-      <div class="text-center space-y-2">
-        <!-- Judul section blog (teks asli tidak dihilangkan) -->
-        <h2 class="fade-slide-in text-3xl sm:text-4xl font-bold text-slate-900">Berita Terbaru</h2>
-        <!-- Deskripsi section blog (teks asli tidak dihilangkan) -->
-        <p class="fade-slide-in text-slate-600">
-          Temukan berita terbaru dari Fekri2020 Alfat dibawah ini.
-        </p>
+  <!-- ===== HERO (YouTube video kamu) ===== -->
+  <header id="home" class="hero hero--plain">
+  <div class="hero-content max-w-3xl text-center space-y-8">
+    <h3 class="hero-subtitle fade-slide-in">Fekri2020 Alfat - Blog & YouTube</h3>
+
+    <h1 class="fade-slide-in text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight">
+      Berita Fekri2020 Alfat
+    </h1>
+
+    <p class="fade-slide-in text-lg sm:text-xl leading-relaxed">
+      Selamat datang di website berita Fekri2020 Alfat! Di sini kamu bisa menemukan berbagai
+      berita seputar Fekri2020 Alfat. Baca sekarang dan jangan sampai ketinggalan berita terbaru yang seru dan inspiratif di satu website!.
+    </p>
+
+    <div class="fade-slide-in flex flex-wrap justify-center gap-4">
+      <a href="#blog" class="btn-primary">Info Selengkapnya</a>
+      <a href="#community" class="btn-secondary">Komunitas</a>
+    </div>
+  </div>
+</header>
+
+  <!-- ===== KONTEN ===== -->
+  <main class="container pb-24 space-y-20">
+
+    <!-- ===== KOMPETENSI KELULUSAN (model gambar) ===== -->
+    <section class="pk-section pk-noimg" id="kompetensi">
+  <div class="pk-header">
+    <h2 class="pk-title">IDENTITAS KAMI</h2>
+    <p class="pk-subtitle">Nilai dan arah konten Fekri2020 Alfat</p>
+  </div>
+
+  <div class="pk-grid">
+    <div class="pk-card" style="--pk-accent: var(--ref-primary);">
+      <div class="pk-card__content">
+        <div class="pk-card__icon">
+          <span>KREATIF</span>
+        </div>
+        <div class="pk-card__body">
+          <p>Kami menghadirkan ide-ide segar, konsep unik, dan gaya penyampaian yang seru.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pk-card" style="--pk-accent: #111827;">
+      <div class="pk-card__content">
+        <div class="pk-card__icon">
+          <span>EDUKATIF</span>
+        </div>
+        <div class="pk-card__body">
+          <p>Konten dibuat bukan cuma menghibur, tapi juga memberi wawasan dan manfaat.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pk-card" style="--pk-accent: var(--ref-accent);">
+      <div class="pk-card__content">
+        <div class="pk-card__icon">
+          <span>INSPIRATIF</span>
+        </div>
+        <div class="pk-card__body">
+          <p>Kami ingin mendorong penonton untuk berkembang, berkarya, dan tetap semangat.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- ===== PROGRAM HERO (seperti contoh yang kamu kirim) ===== -->
+    <section id="programs" class="programs-section">
+  <!-- Judul atas -->
+  <div class="pk-header" style="margin-bottom: 18px;">
+    <h2 class="pk-title" style="color: var(--ref-primary); font-style: normal;">FILOSOFI LOGO</h2>
+    <p class="pk-subtitle">Logo Fekri2020 Alfat menggambarkan identitas kreatif, konsisten, dan berkembang di dunia digital.</p>
+  </div>
+
+  <!-- 1 -->
+  <div class="program-hero noimg">
+    <div class="program-hero-card reveal from-right">
+      <h3 class="hero-title">WARNA BIRU <span>Kepercayaan & Profesional</span></h3>
+      <p class="hero-desc">
+        Biru melambangkan kepercayaan, ketenangan, dan kesan profesional. Ini menegaskan bahwa setiap konten dibuat dengan niat baik,
+        bertanggung jawab, dan berorientasi kualitas.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="program-hero noimg">
+    <div class="program-hero-card reveal from-left">
+      <h3 class="hero-title">BENTUK DINAMIS <span>Gerak & Semangat Berkarya</span></h3>
+      <p class="hero-desc">
+        Bentuk yang terlihat “bergerak” menandakan semangat untuk terus berkarya, beradaptasi, dan berkembang. Ide selalu diperbarui
+        agar tetap relevan dengan tren dan kebutuhan penonton.
+      </p>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="program-hero noimg">
+    <div class="program-hero-card reveal from-right">
+      <h3 class="hero-title">TITIK / PARTIKEL <span>Ide yang Menyebar</span></h3>
+      <p class="hero-desc">
+        Titik-titik menggambarkan kumpulan ide kecil yang jika disatukan menjadi sesuatu yang besar. Ini juga melambangkan jangkauan
+        komunitas—konten yang menyebar, menghubungkan, dan membangun interaksi.
+      </p>
+    </div>
+  </div>
+</section>
+
+    <!-- ===== BERITA (diubah jadi model DALASNEWS + 4 gambar) ===== -->
+    <section id="blog" class="dalas-news-section reveal noimg-news">
+      <div class="section-header">
+        <!-- model sesuai yang kamu minta -->
+        <h2 class="section-title">FEKRI<span>NEWS.</span></h2>
+
+        <!-- tombol kanan seperti contoh -->
+      
       </div>
 
-      <!-- Grid kartu artikel (blog mini) -->
-      <div class="grid-fallback sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Kartu artikel 1 -->
+      <!-- teks lama tidak dihapus (dipertahankan) -->
+      <p class="legacy-blog-title">Berita Terbaru</p>
+      <p class="legacy-blog-desc">Temukan berita terbaru dari Fekri2020 Alfat dibawah ini.</p>
+
+      <div class="news-grid" id="newsGrid">
+        <div id="newsLoading" style="grid-column: 1 / -1; text-align: center; color: #666; padding: 40px;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 10px; color: #f59e0b;"></i><br>
+          Memuat Berita...
+        </div>
+      </div>
+
+      <!-- SUMBER DATA ARTIKEL LAMA (tidak dihapus, hanya dipindah & disembunyikan) -->
+      <div id="newsSource" hidden>
+        <!-- Article 1 -->
         <article
-          class="fade-slide-in card flex flex-col h-full"
+          class="card flex flex-col h-full"
           data-title="Rilis Linktree Fekri2020 Alfat"
           data-date="18 Juni 2025"
           data-full="Fekri2020 Alfat – Kabar gembira bagi para pengikut setia ekosistem digital Fekri2020 Alfat. Untuk memberikan pengalaman akses yang lebih praktis dan terintegrasi, Fekri2020 Alfat kini resmi meluncurkan halaman Linktree sebagai pusat informasi utama bagi seluruh penggemarnya di seluruh dunia.
@@ -225,26 +1061,14 @@ Selain itu, bagi pecinta fotografi, tersedia juga tautan menuju Toko Foto & Gamb
 
 Dengan kehadiran Linktree ini, Fekri2020 Alfat mengajak semua orang untuk menjadi penggemar yang paling berwawasan luas tentang berbagai ekosistem yang mereka bangun."
         >
-          <!-- Label kategori artikel (teks asli tidak dihilangkan) -->
           <p class="text-xs uppercase tracking-wide text-blue-600 font-semibold">Update Channel</p>
-          <!-- Judul artikel (teks asli tidak dihilangkan) -->
           <h3 class="mt-3 font-bold text-xl text-slate-900">Rilis Linktree Fekri2020 Alfat</h3>
-          <!-- Ringkasan singkat artikel (teks asli tidak dihilangkan) -->
           <p class="mt-2 text-slate-600 text-sm flex-grow">Ada yang baru nih di Fekri2020 Alfat.</p>
-
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
-            <!-- Tanggal artikel (teks asli tidak dihilangkan) -->
-            <p class="text-xs text-slate-500 font-medium">18 Juni 2025</p>
-            <!-- Tombol untuk membuka artikel lengkap (teks asli tidak dihilangkan) -->
-            <button class="open-article text-blue-600 font-semibold text-sm hover:underline cursor-pointer">
-              Baca selengkapnya
-            </button>
-          </div>
         </article>
 
-        <!-- Kartu artikel 2 -->
+        <!-- Article 2 -->
         <article
-          class="fade-slide-in card flex flex-col h-full"
+          class="card flex flex-col h-full"
           data-title="Website Resmi Fekri2020 Alfat Resmi Mengudara"
           data-date="10 Januari 2026"
           data-full="Fekri2020 Alfat – Kabar gembira bagi para pencari konten kreatif di tanah air. Tepat pada tanggal 13 Februari 2026, platform digital yang dinantikan, Website Fekri2020 Alfat, resmi hadir dan dapat diakses oleh publik.
@@ -268,18 +1092,11 @@ Bagi pengunjung yang ingin mengeksplorasi lebih jauh, tersedia tombol Info Lengk
           <p class="text-xs uppercase tracking-wide text-blue-600 font-semibold">Update Channel</p>
           <h3 class="mt-3 font-bold text-xl text-slate-900">Website Resmi Fekri2020 Alfat Resmi Mengudara</h3>
           <p class="mt-2 text-slate-600 text-sm flex-grow">Kini kami memiliki website sendiri.</p>
-
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
-            <p class="text-xs text-slate-500 font-medium">10 Januari 2026</p>
-            <button class="open-article text-blue-600 font-semibold text-sm hover:underline cursor-pointer">
-              Baca selengkapnya
-            </button>
-          </div>
         </article>
 
-        <!-- Kartu artikel 3 -->
+        <!-- Article 3 -->
         <article
-          class="fade-slide-in card flex flex-col h-full"
+          class="card flex flex-col h-full"
           data-title="Portal Berita Fekri2020 Alfat Meluncur"
           data-date="12 Februari 2026"
           data-full="Fekri2020 Alfat – Era digital semakin berkembang, dan kebutuhan akan informasi yang akurat serta inspiratif menjadi prioritas utama. Menjawab tantangan tersebut, platform digital Berita Fekri2020 Alfat secara resmi diluncurkan pada Jumat, 13 Februari 2026.
@@ -309,18 +1126,11 @@ Dengan tombol navigasi Info Selengkapnya yang menonjol, pengguna diarahkan untuk
           <p class="text-xs uppercase tracking-wide text-blue-600 font-semibold">Update Channel</p>
           <h3 class="mt-3 font-bold text-xl text-slate-900">Portal Berita Fekri2020 Alfat Meluncur</h3>
           <p class="mt-2 text-slate-600 text-sm flex-grow">Wiih Website resmi hadir.</p>
-
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
-            <p class="text-xs text-slate-500 font-medium">12 Februari 2026</p>
-            <button class="open-article text-blue-600 font-semibold text-sm hover:underline cursor-pointer">
-              Baca selengkapnya
-            </button>
-          </div>
         </article>
 
-        <!-- Kartu artikel 4 -->
+        <!-- Article 4 -->
         <article
-          class="fade-slide-in card flex flex-col h-full"
+          class="card flex flex-col h-full"
           data-title="Kunjungi Toko Fekri2020 Alfat"
           data-date="14 Februari 2026"
           data-full="Fekri2020 Alfat – Sebagai bagian dari pengembangan identitas brand, Fekri2020 Alfat secara resmi mengumumkan pembukaan toko atribut (merchandise) global yang terintegrasi melalui platform Teespring. Langkah ini diambil untuk memenuhi permintaan para pengamat dan pendukung setia yang menginginkan produk eksklusif dengan standar kualitas internasional.
@@ -333,7 +1143,7 @@ Setiap produk yang dipesan akan diproduksi secara profesional dan didistribusika
 Integrasi dengan Website Berita
 Kehadiran toko Teespring ini juga menjadi pelengkap bagi ekosistem digital Fekri2020 Alfat. Selain mendapatkan informasi terkini melalui website berita resmi, kini publik juga dapat mengakses katalog produk secara langsung melalui tautan toko yang telah disediakan.
 
-"Langkah ini merupakan dedikasi kami dalam membangun koneksi yang lebih kuat dengan audiens melalui produk-produk yang representatif," ujar pernyataan resmi dari manajemen Fekri2020 Alfat.
+&quot;Langkah ini merupakan dedikasi kami dalam membangun koneksi yang lebih kuat dengan audiens melalui produk-produk yang representatif,&quot; ujar pernyataan resmi dari manajemen Fekri2020 Alfat.
 
 Cara Mendapatkan Produk
 Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog lengkap dapat diakses secara daring melalui situs resmi Teespring milik Fekri2020 Alfat atau melalui tautan navigasi dibawah ini."
@@ -341,37 +1151,11 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
           <p class="text-xs uppercase tracking-wide text-blue-600 font-semibold">Toko Teespring Kami</p>
           <h3 class="mt-3 font-bold text-xl text-slate-900">Kunjungi Toko Fekri2020 Alfat</h3>
           <p class="mt-2 text-slate-600 text-sm flex-grow">Toko Resmi Dari Fekri2020 Alfat, Emang Ada?</p>
-
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
-            <p class="text-xs text-slate-500 font-medium">14 Februari 2026</p>
-            <button class="open-article text-blue-600 font-semibold text-sm hover:underline cursor-pointer">
-              Baca selengkapnya
-            </button>
-          </div>
-        </article>
-
-        <!-- Kartu artikel 5 -->
-        <article
-          class="fade-slide-in card flex flex-col h-full"
-          data-title="Akan Hadir"
-          data-date="00 Mei 2026"
-          data-full="Tunggu Beritanya Segera Hadir."
-        >
-          <p class="text-xs uppercase tracking-wide text-blue-600 font-semibold">Segera</p>
-          <h3 class="mt-3 font-bold text-xl text-slate-900">Akan Hadir</h3>
-          <p class="mt-2 text-slate-600 text-sm flex-grow">Segera Hadir.</p>
-
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
-            <p class="text-xs text-slate-500 font-medium">00 Mei 2026</p>
-            <button class="open-article text-blue-600 font-semibold text-sm hover:underline cursor-pointer">
-              Baca selengkapnya
-            </button>
-          </div>
         </article>
       </div>
     </section>
 
-    <!-- ===== Youtube Kami ===== -->
+    <!-- ===== Komunitas (teks lama tetap) ===== -->
     <section id="community" class="space-y-8">
       <div class="text-center">
         <h2 class="fade-slide-in text-3xl sm:text-4xl font-bold text-slate-900">Komunitas</h2>
@@ -384,25 +1168,22 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
       </div>
     </section>
 
-    <!-- ===== Tentang Channel ===== -->
+    <!-- ===== Tentang (teks lama tetap) ===== -->
     <section id="about" class="grid md:grid-cols-2 gap-12 items-center">
       <div class="space-y-6">
         <h2 class="fade-slide-in text-3xl sm:text-4xl font-bold text-slate-900">Tentang Channel</h2>
-
-        <!-- Paragraf asli tidak dihilangkan -->
         <p class="fade-slide-in text-slate-600 leading-relaxed text-lg">
           Fekri2020 Alfat berfokus pada konten kreatif, edukatif, dan inspiratif. Website ini dirancang sebagai website berita untuk penonton Fekri2020 Alfat dapat membaca
           berita terbaru kapan saja dengan mudah.
         </p>
       </div>
 
-      <!-- Elemen visual ala referensi (tidak menghapus teks lama, hanya menambah tampilan) -->
       <div class="fade-slide-in card bg-slate-100 border-dashed border-2 flex items-center justify-center h-64">
         <span class="text-slate-400 font-medium italic">Fekri2020 Alfat</span>
       </div>
     </section>
 
-    <!-- ===== FAQ ===== -->
+    <!-- ===== FAQ (teks lama tetap) ===== -->
     <section id="faq" class="space-y-8 max-w-4xl mx-auto">
       <div class="text-center">
         <h2 class="fade-slide-in text-3xl font-bold text-slate-900">FAQ</h2>
@@ -433,61 +1214,84 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
     </section>
   </main>
 
-  <!-- ===== Modal untuk Blog Panjang ===== -->
-  <!-- Modal ini muncul ketika tombol "Baca selengkapnya" ditekan -->
+  <!-- ===== Modal (tetap) ===== -->
   <div id="article-modal" class="modal-overlay">
     <div class="modal-content">
-      <!-- Tombol close atas (tambahan, tidak menghapus tombol "Tutup") -->
-      <button id="modal-close-top" class="absolute top-6 right-6 text-slate-400 hover:text-slate-900 transition text-2xl" aria-label="Tutup modal">
+      <button id="modal-close-top"
+        class="absolute top-6 right-6 text-slate-400 hover:text-slate-900 transition text-2xl"
+        aria-label="Tutup modal">
         &times;
       </button>
 
-      <!-- Judul artikel lengkap -->
       <h3 id="modal-title" class="text-2xl font-bold text-slate-900 pr-10">Judul Artikel</h3>
-      <!-- Tanggal artikel lengkap -->
       <p id="modal-date" class="text-sm font-semibold text-blue-600 uppercase tracking-wide mt-2">Tanggal</p>
 
       <hr class="my-5 border-slate-100" />
 
-      <!-- Isi artikel lengkap -->
-      <!-- Teks placeholder asli tetap ada (meski modal defaultnya tertutup) -->
       <div id="modal-body" class="text-slate-700 leading-relaxed text-lg space-y-4">
         <p class="text-slate-600">Isi lengkap artikel akan muncul di sini.</p>
       </div>
 
-      <!-- Tombol untuk menutup modal (teks asli tidak dihilangkan) -->
       <div class="pt-8 flex justify-end">
         <button id="modal-close" class="modal-close">Tutup</button>
       </div>
     </div>
   </div>
 
-  <!-- ===== Footer ===== -->
+  <!-- ===== Footer (teks lama tetap) ===== -->
   <footer class="bg-slate-900 text-slate-300 text-center py-10 text-sm">
-    <!-- Teks footer asli tidak dihilangkan -->
     © 2026 Fekri2020 Alfat — Konten Kreatif Dalam Satu Channel
   </footer>
 
   <script>
-    // ===== JavaScript =====
+    // =========================================================
+    // Header transparan -> putih saat scroll (mirip referensi)
+    // =========================================================
+    const siteHeader = document.getElementById("siteHeader");
+    const onScrollHeader = () => {
+      if (window.scrollY > 10) siteHeader.classList.add("is-scrolled");
+      else siteHeader.classList.remove("is-scrolled");
+    };
+    window.addEventListener("scroll", onScrollHeader);
+    onScrollHeader();
 
-    // 1) Animasi masuk bertahap (lebih halus, mengikuti referensi)
+    // =========================================================
+    // Mobile drawer toggle
+    // =========================================================
+    const navToggle = document.getElementById("navToggle");
+    const mobileDrawer = document.getElementById("mobileDrawer");
+    const setNavOpen = (open) => {
+      document.body.classList.toggle("nav-open", open);
+      navToggle.setAttribute("aria-expanded", String(open));
+    };
+    navToggle.addEventListener("click", () => {
+      const open = !document.body.classList.contains("nav-open");
+      setNavOpen(open);
+    });
+    mobileDrawer.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener("click", () => setNavOpen(false));
+    });
+
+    // =========================================================
+    // Animasi masuk bertahap (fade-slide-in) (tetap)
+    // =========================================================
     const observerOptions = { threshold: 0.12 };
-
-    const observer = new IntersectionObserver((entries) => {
+    const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("show");
-          observer.unobserve(entry.target);
+          fadeObserver.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
     window.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".fade-slide-in").forEach((el) => observer.observe(el));
+      document.querySelectorAll(".fade-slide-in").forEach((el) => fadeObserver.observe(el));
     });
 
-    // 2) Smooth scroll saat klik menu navigasi (tetap dipertahankan dari website lama)
+    // =========================================================
+    // Smooth scroll (tetap)
+    // =========================================================
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
       link.addEventListener("click", (event) => {
         event.preventDefault();
@@ -497,7 +1301,58 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
       });
     });
 
-    // 3) Modal blog: tampilkan artikel lengkap saat tombol diklik (diupgrade ala referensi)
+    // =========================================================
+    // Reveal untuk .reveal (sesuai permintaan)
+    // =========================================================
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+    });
+
+    // =========================================================
+    // Program news (contoh) - biar tidak stuck di "Memuat Berita..."
+    // =========================================================
+    const programNews = {
+      "icp-news": [
+        { title: "“Tanya Obat, Tanya Apoteker”: Inspirasi Dunia Farmasi di OTM Spemdalas", url: "#" },
+        { title: "SOUL (Spemdalas Youth Language Competition)", url: "#" }
+      ],
+      "tcp-news": [
+        { title: "Kegiatan Tahfidz: Target Hafalan dan Murojaah Pekanan", url: "#" },
+        { title: "Kajian Qurani: Adab dan Akhlak dalam Keseharian", url: "#" }
+      ],
+      "ecp-news": [
+        { title: "Program Excellent: Pembinaan Akademik Intensif", url: "#" },
+        { title: "Try Out & Evaluasi Berkala untuk Peningkatan Prestasi", url: "#" }
+      ]
+    };
+
+    function renderProgramNews(containerId) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      const items = programNews[containerId] || [];
+      el.innerHTML = items.map(item => `
+        <div class="hero-news-item">
+          <a href="${item.url}">${item.title}</a>
+          <span class="hero-news-arrow" aria-hidden="true">›</span>
+        </div>
+      `).join("");
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+      Object.keys(programNews).forEach(renderProgramNews);
+    });
+
+    // =========================================================
+    // Modal blog (tetap) - dibuat function agar bisa dipanggil dari kartu news baru
+    // =========================================================
     const modal = document.getElementById("article-modal");
     const modalTitle = document.getElementById("modal-title");
     const modalDate = document.getElementById("modal-date");
@@ -505,14 +1360,12 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
     const modalClose = document.getElementById("modal-close");
     const modalCloseTop = document.getElementById("modal-close-top");
 
-    const openModal = (card) => {
+    function openModal(card) {
       modalTitle.textContent = card.dataset.title || "Judul Artikel";
       modalDate.textContent = card.dataset.date || "Tanggal";
 
       const content = card.dataset.full || "Isi lengkap belum tersedia.";
 
-      // Pecah jadi paragraf sederhana tanpa mengubah teks konten aslinya
-      // (tetap menggunakan konten dari data-full)
       const parts = content
         .split(/\n+/)
         .map(s => s.trim())
@@ -523,34 +1376,91 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
 
       modal.style.display = "flex";
       document.body.style.overflow = "hidden";
-    };
+    }
 
-    const closeModal = () => {
+    function closeModal() {
       modal.style.display = "none";
       document.body.style.overflow = "auto";
-    };
-
-    document.querySelectorAll(".open-article").forEach((button) => {
-      button.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const card = button.closest("article");
-        if (card) openModal(card);
-      });
-    });
+    }
 
     modalClose.addEventListener("click", closeModal);
     modalCloseTop.addEventListener("click", closeModal);
-
     modal.addEventListener("click", (event) => {
       if (event.target === modal) closeModal();
     });
 
-    // 4) Active state untuk nav saat scroll (mengikuti referensi)
+    // =========================================================
+    // Render DALAS-style news dari artikel lama (newsSource)
+    // =========================================================
+    function renderDalasNews() {
+      const grid = document.getElementById("newsGrid");
+      const loading = document.getElementById("newsLoading");
+      const source = document.getElementById("newsSource");
+      if (!grid || !source) return;
+
+      const articles = [...source.querySelectorAll("article")];
+
+      // hapus loading
+      if (loading) loading.remove();
+
+      // default gambar (biar langsung jadi 4 gambar)
+      const fallbackImages = [
+        "https://smpm12gkb.sch.id/wp-content/uploads/2025/12/IMG_7988-scaled.jpg",
+        "https://smpm12gkb.sch.id/wp-content/uploads/2025/12/IMG_8066-scaled.jpg",
+        "https://smpm12gkb.sch.id/wp-content/uploads/2025/12/ICP.png",
+        "https://smpm12gkb.sch.id/wp-content/uploads/2025/12/ECP.png"
+      ];
+
+      articles.slice(0, 4).forEach((a, idx) => {
+        const title = a.dataset.title || "Judul";
+        const date = a.dataset.date || "";
+        const full = a.dataset.full || "";
+
+        const summaryEl = a.querySelector("p.flex-grow");
+        const summary = summaryEl?.textContent?.trim() || "Baca selengkapnya.";
+
+        // kamu bisa tambahkan data-img="URL" kalau mau gambar custom per berita
+        const img = a.dataset.img || fallbackImages[idx] || `https://picsum.photos/seed/fekri-news-${idx+1}/900/700`;
+
+        const item = document.createElement("article");
+        item.className = "news-item";
+        item.dataset.title = title;
+        item.dataset.date = date;
+        item.dataset.full = full;
+        item.dataset.img = img;
+
+        item.innerHTML = `
+  <div class="news-overlay">
+    <div class="news-date">${date}</div>
+    <h3 class="news-title">${title}</h3>
+    <p class="news-description">${summary}</p>
+    <button class="open-article">Baca selengkapnya</button>
+  </div>
+`;
+
+        grid.appendChild(item);
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", renderDalasNews);
+
+    // event delegation: tombol "Baca selengkapnya" pada kartu news baru
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".open-article");
+      if (!btn) return;
+      const card = btn.closest("article");
+      if (!card) return;
+      openModal(card);
+    });
+
+    // =========================================================
+    // Active state nav saat scroll (tetap, untuk desktop)
+    // =========================================================
     window.addEventListener("scroll", () => {
       const sections = document.querySelectorAll("section, header");
-      const navLinks = document.querySelectorAll("nav ul li a");
-
+      const navLinks = document.querySelectorAll(".nav-desktop a");
       let current = "";
+
       sections.forEach((section) => {
         const sectionTop = section.offsetTop;
         if (window.pageYOffset >= sectionTop - 120) {
@@ -567,16 +1477,4 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
     });
   </script>
 </body>
-</html>  
-
-
-
-
-
-
-
-
-
-
-
-
+</html>
