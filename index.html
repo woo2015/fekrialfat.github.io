@@ -898,6 +898,121 @@
       color: #fff;
     }
     .footer-social i{ font-size: 18px; }
+
+    /* =========================================================
+       FEKRI MAGAZINE (tambahan)
+       ========================================================= */
+    .magazine-section{
+      padding: 60px 0;
+      background: #fff;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+    .magazine-title{
+      margin: 0;
+      font-size: 40px;
+      font-weight: 900;
+      color: var(--ref-primary);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      font-style: italic;
+      text-align: left;
+    }
+    .magazine-desc{
+      margin: 10px 0 0;
+      color: #64748b;
+      font-weight: 600;
+      max-width: 860px;
+    }
+    .magazine-actions{
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .magazine-cta-btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 900;
+      border: 1px solid rgba(4,107,210,.25);
+      background: rgba(4,107,210,.08);
+      color: var(--ref-primary);
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+    .magazine-cta-btn:hover{
+      background: rgba(4,107,210,.12);
+      border-color: rgba(4,107,210,.35);
+      transform: translateY(-1px);
+    }
+
+    .magazine-reader-overlay{
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      display: none;
+      flex-direction: column;
+      z-index: 1200;
+    }
+    .magazine-reader-topbar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+    }
+    .magazine-reader-topbar .magazine-reader-title{
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: .2px;
+      font-size: 14px;
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .magazine-reader-back{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      border: 1px solid rgba(4,107,210,.25);
+      background: rgba(4,107,210,.08);
+      color: var(--ref-primary);
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+      white-space: nowrap;
+    }
+    .magazine-reader-back:hover{
+      background: rgba(4,107,210,.12);
+      border-color: rgba(4,107,210,.35);
+      transform: translateY(-1px);
+    }
+    .magazine-embed{
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .magazine-embed iframe{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
   </style>
 </head>
 
@@ -913,6 +1028,7 @@
       <ul class="nav-desktop" id="desktopNav">
         <li><a href="#home">Home</a></li>
         <li><a href="#blog">Berita</a></li>
+        <li><a href="#magazine">Fekri Magazine</a></li>
         <li><a href="#achievements">Pencapaian Kami</a></li>
         <li><a href="#community">Komunitas</a></li>
         <li><a href="#testimoni">Testimoni</a></li>
@@ -931,6 +1047,7 @@
       <ul>
         <li><a href="#home">Home</a></li>
         <li><a href="#blog">Berita</a></li>
+        <li><a href="#magazine">Fekri Magazine</a></li>
         <li><a href="#achievements">Pencapaian Kami</a></li>
         <li><a href="#community">Komunitas</a></li>
         <li><a href="#testimoni">Testimoni</a></li>
@@ -1166,7 +1283,7 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
           <h3 class="mt-3 font-bold text-xl text-slate-900">Kunjungi Toko Fekri2020 Alfat</h3>
           <p class="mt-2 text-slate-600 text-sm flex-grow">Toko Resmi Dari Fekri2020 Alfat, Emang Ada?</p>
         </article>
-        
+
         <article class="card flex flex-col h-full"
           data-title="Koleksi Quiet Journey Di Toko Spring"
           data-date="25 Maret 2026"
@@ -1189,6 +1306,19 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
           <h3 class="mt-3 font-bold text-xl text-slate-900">Koleksi Quiet Journey Di Toko Spring</h3>
           <p class="mt-2 text-slate-600 text-sm flex-grow">Koleksi Quiet Journey di Toko Spring, Terbaru</p>
         </article>
+      </div>
+    </section>
+
+    <!-- ===== FEKRI MAGAZINE (tambahan) ===== -->
+    <section id="magazine" class="magazine-section reveal">
+      <div class="section-header" style="display:flex; justify-content: space-between; align-items: flex-end; gap: 18px; margin-bottom: 10px;">
+        <h2 class="magazine-title">FEKRI<span style="color: var(--ref-accent);">MAGAZINE.</span></h2>
+      </div>
+
+      <p class="magazine-desc">Klik tombol dibawah ini untuk membaca versi digital dari Fekri Magazine</p>
+
+      <div class="magazine-actions">
+        <button id="openMagazineBtn" class="magazine-cta-btn" type="button">BACA FEKRI MAGAZINE</button>
       </div>
     </section>
 
@@ -1392,6 +1522,55 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
       <div class="pt-8 flex justify-end">
         <button id="modal-close" class="modal-close">Tutup</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ===== FEKRI MAGAZINE: Modal Pilih Edisi (tambahan) ===== -->
+  <div id="magazine-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="Pilih Edisi Fekri Magazine">
+      <button id="magazine-modal-close-top"
+        class="absolute top-6 right-6 text-slate-400 hover:text-slate-900 transition text-2xl"
+        aria-label="Tutup">
+        &times;
+      </button>
+
+      <h3 class="text-2xl font-bold text-slate-900 pr-10">Fekri Magazine</h3>
+      <p class="text-slate-600 mt-2">Pilih edisi yang ingin kamu baca:</p>
+
+      <div class="pt-6">
+        <button id="magEdition1Btn" class="magazine-cta-btn" type="button">
+          Edisi 1 (November 2025 - April 2026)
+        </button>
+      </div>
+
+      <div class="pt-8 flex justify-end">
+        <button id="magazine-modal-close" class="modal-close" type="button">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FEKRI MAGAZINE: Reader Overlay Putih (tambahan) ===== -->
+  <div id="magazine-reader" class="magazine-reader-overlay" aria-hidden="true">
+    <div class="magazine-reader-topbar">
+      <button id="magReaderBackBtn" class="magazine-reader-back" type="button">
+        <span aria-hidden="true">←</span> Kembali
+      </button>
+      <div class="magazine-reader-title" title="Fekri Magazine - Satu Layar, Sejuta Rasa">
+        Fekri Magazine - Satu Layar, Sejuta Rasa
+      </div>
+      <div style="width: 92px;" aria-hidden="true"></div>
+    </div>
+
+    <div class="magazine-embed" aria-label="Flipbook Fekri Magazine">
+      <iframe
+        src="https://online.fliphtml5.com/kemkv/joyc/"
+        title="Fekri Magazine - Satu Layar, Sejuta Rasa"
+        seamless="seamless"
+        scrolling="no"
+        frameborder="0"
+        allowtransparency="true"
+        allowfullscreen="true">
+      </iframe>
     </div>
   </div>
 
@@ -1760,6 +1939,76 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
           link.classList.add("text-blue-600");
         }
       });
+    });
+
+    // =========================================================
+    // FEKRI MAGAZINE (tambahan)
+    // =========================================================
+    const openMagazineBtn = document.getElementById("openMagazineBtn");
+    const magazineModal = document.getElementById("magazine-modal");
+    const magazineModalClose = document.getElementById("magazine-modal-close");
+    const magazineModalCloseTop = document.getElementById("magazine-modal-close-top");
+    const magEdition1Btn = document.getElementById("magEdition1Btn");
+
+    const magazineReader = document.getElementById("magazine-reader");
+    const magReaderBackBtn = document.getElementById("magReaderBackBtn");
+
+    let magModalOpen = false;
+    let magReaderOpen = false;
+
+    function syncScrollLock() {
+      document.body.style.overflow = (magModalOpen || magReaderOpen) ? "hidden" : "auto";
+    }
+
+    function openMagazineModal() {
+      if (!magazineModal) return;
+      magModalOpen = true;
+      magazineModal.style.display = "flex";
+      magazineModal.setAttribute("aria-hidden", "false");
+      syncScrollLock();
+    }
+
+    function closeMagazineModal() {
+      if (!magazineModal) return;
+      magModalOpen = false;
+      magazineModal.style.display = "none";
+      magazineModal.setAttribute("aria-hidden", "true");
+      syncScrollLock();
+    }
+
+    function openMagazineReader() {
+      if (!magazineReader) return;
+      magReaderOpen = true;
+      magazineReader.style.display = "flex";
+      magazineReader.setAttribute("aria-hidden", "false");
+      syncScrollLock();
+    }
+
+    function closeMagazineReader() {
+      if (!magazineReader) return;
+      magReaderOpen = false;
+      magazineReader.style.display = "none";
+      magazineReader.setAttribute("aria-hidden", "true");
+      syncScrollLock();
+    }
+
+    openMagazineBtn?.addEventListener("click", openMagazineModal);
+    magazineModalClose?.addEventListener("click", closeMagazineModal);
+    magazineModalCloseTop?.addEventListener("click", closeMagazineModal);
+
+    magazineModal?.addEventListener("click", (event) => {
+      if (event.target === magazineModal) closeMagazineModal();
+    });
+
+    magEdition1Btn?.addEventListener("click", () => {
+      closeMagazineModal();     // tutup pilihan edisi
+      openMagazineReader();     // buka reader putih
+    });
+
+    magReaderBackBtn?.addEventListener("click", closeMagazineReader);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && magReaderOpen) closeMagazineReader();
     });
   </script>
 
