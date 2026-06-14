@@ -2,13 +2,12 @@
 <html lang="id">
 <head>
   <meta name="google-site-verification" content="aIggCJfMayP69hkPM_IHsbAVsjuODroST1QRglvjDzQ" />
-  
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DWECWPHK9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-7DWECWPHK9');
   </script>
 
@@ -316,6 +315,95 @@
     }
 
     /* =========================================================
+       WORD ROTATOR (Pilihan Karena...)
+       ========================================================= */
+    .why-section{
+      padding: 36px 0 6px;
+      background: #fff;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+
+    .why-title{
+      margin: 0;
+      text-align: center;
+      font-size: clamp(22px, 2.5vw, 34px);
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.2px;
+      line-height: 1.15;
+    }
+
+    .word-rotator{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .word-rotator__box{
+      --rot-h: 1.2em;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      height: var(--rot-h);
+      overflow: hidden;
+      padding: 0.25em 0.7em;
+      border-radius: 10px;
+      background: #2a6ef2;
+      color: #fff;
+      font-weight: 900;
+      box-shadow: 0 12px 28px rgba(42, 110, 242, .22);
+    }
+
+    .word-rotator__list{
+      display: block;
+      will-change: transform;
+      animation: rotWords 7.5s infinite;
+    }
+
+    .word-rotator__item{
+      display: block;
+      height: var(--rot-h);
+      line-height: var(--rot-h);
+      white-space: nowrap;
+    }
+
+    @keyframes rotWords{
+      0%   { transform: translateY(0); }
+      33.333% { transform: translateY(calc(-1 * var(--rot-h))); }
+      66.666% { transform: translateY(calc(-2 * var(--rot-h))); }
+      100% { transform: translateY(calc(-3 * var(--rot-h))); }
+    }
+
+    .why-desc{
+      margin: 14px auto 0;
+      max-width: 900px;
+      text-align: center;
+      color: #475569;
+      font-size: 18px;
+      line-height: 1.75;
+      font-weight: 600;
+      padding: 0 24px;
+    }
+
+    .why-strong{
+      margin: 10px auto 0;
+      max-width: 900px;
+      text-align: center;
+      color: #0f172a;
+      font-size: 18px;
+      line-height: 1.75;
+      font-weight: 900;
+      padding: 0 24px;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .word-rotator__list{ animation: none !important; transform: translateY(0) !important; }
+      .word-rotator__item:not(:first-child){ display: none !important; }
+    }
+
+    /* =========================================================
        IDENTITAS (pk)
        ========================================================= */
     .pk-section{
@@ -408,6 +496,7 @@
     .programs-section{
       padding: 26px 0 10px;
       background: #fff;
+      --program-accent: #2a6ef2; /* aksen khusus Filosofi Logo */
     }
     .program-hero{
       position: relative;
@@ -435,7 +524,7 @@
       border-radius: 18px;
       margin: 64px 40px 40px 40px;
       padding: 34px 34px 26px;
-      border-top: 6px solid var(--ref-accent);
+      border-top: 6px solid var(--program-accent);
       box-shadow: 0 22px 55px rgba(15, 23, 42, 0.16);
       font-family: "Poppins", Inter, system-ui, sans-serif;
     }
@@ -451,7 +540,7 @@
     }
     .program-hero-card .hero-title span{
       display: block;
-      color: var(--ref-accent);
+      color: var(--program-accent);
       font-weight: 500;
     }
     .program-hero-card .hero-desc{
@@ -1023,6 +1112,53 @@
       height: 100%;
       border: none;
     }
+
+    /* =========================================================
+       BLOG READER OVERLAY (FEKRI BLOG)
+       ========================================================= */
+    .blog-reader-overlay{
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      display: none;
+      flex-direction: column;
+      z-index: 1300;
+    }
+    .blog-reader-topbar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+    }
+    .blog-reader-title{
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: .2px;
+      font-size: 14px;
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .blog-embed{
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-embed iframe{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
   </style>
 </head>
 
@@ -1293,29 +1429,6 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
           <h3 class="mt-3 font-bold text-xl text-slate-900">Kunjungi Toko Fekri2020 Alfat</h3>
           <p class="mt-2 text-slate-600 text-sm flex-grow">Toko Resmi Dari Fekri2020 Alfat, Emang Ada?</p>
         </article>
-
-        <article class="card flex flex-col h-full"
-          data-title="Koleksi Quiet Journey Di Toko Spring"
-          data-date="25 Maret 2026"
-          data-full="Fekri2020 Alfat – Industri fashion tanah air kembali kedatangan koleksi bermakna mendalam melalui peluncuran lini produk terbaru bertajuk Quiet Journey. Koleksi ini mengusung pesan utama A Quiet Step is Still a Journey, sebuah pengingat bagi masyarakat untuk tetap menghargai setiap progres dalam hidup, sekecil apa pun itu.
-
-Koleksi Quiet Journey hadir dengan desain minimalis namun elegan, yang diaplikasikan ke dalam berbagai produk apparel dan aksesori gaya hidup. Beberapa produk unggulan yang diperkenalkan antara lain:
-
-Varian Hoodie: Hadir dengan warna putih bersih yang memberikan kesan nyaman dan tenang.
-
-Koleksi T-Shirt: Tersedia dalam warna hitam dan abu-abu arang (charcoal) dengan potongan yang modern.
-
-Lifestyle Accessories: Selain pakaian, koleksi ini juga menghadirkan mug keramik putih sebagai pelengkap rutinitas harian.
-
-Perwakilan dari tim kreatif menyatakan bahwa pemilihan kalimat Langkah yang tenang tetaplah sebuah perjalanan bertujuan untuk memberikan dukungan moral di tengah dunia yang serba cepat. Kami ingin pengguna produk ini merasa bahwa tidak ada tekanan untuk selalu tampil terdepan; konsistensi dalam langkah kecil pun adalah sebuah keberhasilan, ujarnya.
-
-Seluruh koleksi kini sudah dapat diakses oleh publik melalui platform digital. Menggunakan material berkualitas tinggi, produk ini diharapkan tidak hanya menjadi tren busana, tetapi juga menjadi identitas bagi mereka yang menghargai ketenangan dan kedalaman proses.
-
-Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journey diprediksi akan menjadi salah satu koleksi yang diminati oleh para pecinta fashion minimalis di tahun 2026 ini.">
-          <p class="text-xs uppercase tracking-wide text-blue-600 font-semibold">Toko Teespring Kami</p>
-          <h3 class="mt-3 font-bold text-xl text-slate-900">Koleksi Quiet Journey Di Toko Spring</h3>
-          <p class="mt-2 text-slate-600 text-sm flex-grow">Koleksi Quiet Journey di Toko Spring, Terbaru</p>
-        </article>
       </div>
     </section>
 
@@ -1374,7 +1487,7 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
 
       <div class="fade-slide-in card bg-blue-50 border border-blue-200 p-10 text-center space-y-4">
         <p class="text-slate-700 max-w-2xl mx-auto">
-          Subscribe youtube Fekri2020 Alfat beragam untuk konten yang menarik.
+          Subscribe YouTube Fekri2020 Alfat untuk menemukan beragam konten yang menarik untuk disaksikan dan sayang untuk dilewatkan.
         </p>
       </div>
     </section>
@@ -1497,7 +1610,7 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
         <div class="fade-slide-in card">
           <h3 class="font-bold text-slate-900 text-lg">Apakah akhir akhir ini terdapat pembaruan?</h3>
           <p class="mt-2 text-slate-600">
-            Ya, diawal tahun 2026 kami memperbaiki Youtube kami. Mulai dari membuat website pertama, slogan baru, banner youtube baru hingga yang paling baru adalah website berita ini.
+            Ya, diawal tahun 2026 kami memperbaiki Youtube kami. Mulai dari membuat website pertama, slogan baru, banner youtube baru, website berita ini hingga yang paling baru adalah majalah FEKRIMAGAZINE.
           </p>
         </div>
 
@@ -1511,7 +1624,7 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
     </section>
   </main>
 
-  <!-- ===== Modal ===== -->
+  <!-- ===== Modal Artikel ===== -->
   <div id="article-modal" class="modal-overlay">
     <div class="modal-content">
       <button id="modal-close-top"
@@ -1584,6 +1697,30 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
     </div>
   </div>
 
+  <!-- ===== FEKRI BLOG: Reader Overlay Putih (tambahan) ===== -->
+  <div id="blog-reader" class="blog-reader-overlay" aria-hidden="true">
+    <div class="blog-reader-topbar">
+      <button id="blogBackBtn" class="magazine-reader-back" type="button">
+        <span aria-hidden="true">←</span> Kembali
+      </button>
+
+      <div class="blog-reader-title" title="Blog Fekri2020 Alfat">
+        Blog Fekri2020 Alfat
+      </div>
+
+      <div style="width: 92px;" aria-hidden="true"></div>
+    </div>
+
+    <div class="blog-embed" aria-label="Embed Blog Fekri2020 Alfat">
+      <iframe
+        src="https://fekrialfat.blogspot.com/"
+        title="Blog Fekri2020 Alfat"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+
   <!-- ===== Footer ===== -->
   <footer class="bg-slate-900 text-slate-300 py-10 text-sm">
     <div class="container footer-inner">
@@ -1621,6 +1758,19 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
   </footer>
 
   <script>
+    // =========================================================
+    // STATE untuk scroll lock (gabungan semua overlay)
+    // =========================================================
+    let articleModalOpen = false;
+    let magModalOpen = false;
+    let magReaderOpen = false;
+    let blogReaderOpen = false;
+
+    function syncBodyOverflow() {
+      const locked = articleModalOpen || magModalOpen || magReaderOpen || blogReaderOpen;
+      document.body.style.overflow = locked ? "hidden" : "auto";
+    }
+
     // =========================================================
     // Header transparan -> putih saat scroll
     // =========================================================
@@ -1695,7 +1845,7 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
     });
 
     // =========================================================
-    // Modal blog
+    // Modal blog (artikel)
     // =========================================================
     const modal = document.getElementById("article-modal");
     const modalTitle = document.getElementById("modal-title");
@@ -1719,12 +1869,14 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
       modalBody.innerHTML = parts.map(p => `<p>${p}</p>`).join("");
 
       modal.style.display = "flex";
-      document.body.style.overflow = "hidden";
+      articleModalOpen = true;
+      syncBodyOverflow();
     }
 
     function closeModal() {
       modal.style.display = "none";
-      document.body.style.overflow = "auto";
+      articleModalOpen = false;
+      syncBodyOverflow();
     }
 
     modalClose.addEventListener("click", closeModal);
@@ -1734,8 +1886,39 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
     });
 
     // =========================================================
+    // FEKRI BLOG overlay (Lihat Semua Artikel)
+    // =========================================================
+    const blogReader = document.getElementById("blog-reader");
+    const blogBackBtn = document.getElementById("blogBackBtn");
+
+    function openBlogReader() {
+      if (!blogReader) return;
+      blogReaderOpen = true;
+      blogReader.style.display = "flex";
+      blogReader.setAttribute("aria-hidden", "false");
+      syncBodyOverflow();
+    }
+
+    function closeBlogReader() {
+      if (!blogReader) return;
+      blogReaderOpen = false;
+      blogReader.style.display = "none";
+      blogReader.setAttribute("aria-hidden", "true");
+      syncBodyOverflow();
+    }
+
+    blogBackBtn?.addEventListener("click", closeBlogReader);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (blogReaderOpen) closeBlogReader();
+        if (magReaderOpen) closeMagazineReader();
+      }
+    });
+
+    // =========================================================
     // Render FEKRINEWS dari newsSource:
-    // tampil 4 dulu, sisanya muncul setelah klik "Lihat Semua Artikel"
+    // tampil 4 kartu (sesuai source), tombol "Lihat Semua Artikel" buka blog overlay
     // =========================================================
     function renderDalasNews() {
       const grid = document.getElementById("newsGrid");
@@ -1778,6 +1961,7 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
         item.dataset.date = date;
         item.dataset.full = full;
 
+        // (kalau nanti source > 4, tetap aman)
         if (idx >= 4) item.classList.add("is-hidden");
 
         item.innerHTML = `
@@ -1794,16 +1978,10 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
 
       grid.appendChild(frag);
 
+      // tombol selalu ada dan membuka Blog
       if (showAllWrap && showAllBtn) {
-        const hasMore = articles.length > 4;
-        showAllWrap.hidden = !hasMore;
-
-        if (hasMore) {
-          showAllBtn.onclick = () => {
-            grid.querySelectorAll(".news-item.is-hidden").forEach(el => el.classList.remove("is-hidden"));
-            showAllWrap.hidden = true;
-          };
-        }
+        showAllWrap.hidden = false;
+        showAllBtn.onclick = () => openBlogReader();
       }
     }
     window.addEventListener("DOMContentLoaded", renderDalasNews);
@@ -1963,19 +2141,12 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
     const magazineReader = document.getElementById("magazine-reader");
     const magReaderBackBtn = document.getElementById("magReaderBackBtn");
 
-    let magModalOpen = false;
-    let magReaderOpen = false;
-
-    function syncScrollLock() {
-      document.body.style.overflow = (magModalOpen || magReaderOpen) ? "hidden" : "auto";
-    }
-
     function openMagazineModal() {
       if (!magazineModal) return;
       magModalOpen = true;
       magazineModal.style.display = "flex";
       magazineModal.setAttribute("aria-hidden", "false");
-      syncScrollLock();
+      syncBodyOverflow();
     }
 
     function closeMagazineModal() {
@@ -1983,7 +2154,7 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
       magModalOpen = false;
       magazineModal.style.display = "none";
       magazineModal.setAttribute("aria-hidden", "true");
-      syncScrollLock();
+      syncBodyOverflow();
     }
 
     function openMagazineReader() {
@@ -1991,7 +2162,7 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
       magReaderOpen = true;
       magazineReader.style.display = "flex";
       magazineReader.setAttribute("aria-hidden", "false");
-      syncScrollLock();
+      syncBodyOverflow();
     }
 
     function closeMagazineReader() {
@@ -1999,7 +2170,7 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
       magReaderOpen = false;
       magazineReader.style.display = "none";
       magazineReader.setAttribute("aria-hidden", "true");
-      syncScrollLock();
+      syncBodyOverflow();
     }
 
     openMagazineBtn?.addEventListener("click", openMagazineModal);
@@ -2016,10 +2187,6 @@ Dengan perpaduan desain tipografi yang estetik dan pesan yang kuat, Quiet Journe
     });
 
     magReaderBackBtn?.addEventListener("click", closeMagazineReader);
-
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && magReaderOpen) closeMagazineReader();
-    });
   </script>
 
   <!-- Instagram embed script (sekali saja) -->
