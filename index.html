@@ -206,6 +206,25 @@
       color: var(--ref-primary);
       background: rgba(4,107,210,.08);
     }
+
+    /* (BARU) Tombol "Sejarah" di desktop nav tampil seperti link */
+    .nav-desktop-btn{
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      padding: 10px 12px;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: color .15s ease, background .15s ease;
+    }
+    .nav-desktop-btn:hover{
+      color: var(--ref-primary);
+      background: rgba(4,107,210,.08);
+    }
+
     .nav-toggle{
       display: none;
       border: 1px solid rgba(226,232,240,.9);
@@ -248,6 +267,25 @@
       color: var(--ref-primary);
     }
     body.nav-open .mobile-drawer { display: block; }
+
+    /* (BARU) Tombol "Sejarah" di mobile drawer */
+    .mobile-drawer-btn{
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: transparent;
+      border: 0;
+      color: var(--slate-700);
+      font-weight: 900;
+      cursor: pointer;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+    .mobile-drawer-btn:hover{
+      background: rgba(4,107,210,.08);
+      color: var(--ref-primary);
+    }
 
     @media (max-width: 921px){
       .nav-desktop { display: none; }
@@ -1159,6 +1197,207 @@
       height: 100%;
       border: none;
     }
+
+    /* =========================================================
+       SEJARAH OVERLAY (BARU) - dark + progress mirip contoh
+       ========================================================= */
+    .sejarah-overlay{
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      z-index: 1400;
+
+      background:
+        radial-gradient(60% 80% at 20% 10%, rgba(4,107,210,.22) 0%, rgba(4,107,210,0) 60%),
+        radial-gradient(70% 80% at 90% 0%, rgba(245,158,11,.16) 0%, rgba(245,158,11,0) 55%),
+        linear-gradient(135deg, #0b1220 0%, #071327 55%, #040b18 100%);
+    }
+
+    .sejarah-topbar{
+      height: 54px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+
+      background: rgba(15,23,42,.55);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(10px);
+    }
+    .sejarah-back{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(4,107,210,.30);
+      background: rgba(4,107,210,.14);
+      color: #eaf2ff;
+      font-weight: 900;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+    .sejarah-topbar-title{
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+      font-weight: 900;
+      color: rgba(255,255,255,.92);
+      font-size: 13px;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .sejarah-content{
+      flex: 1;
+      min-height: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sejarah-header{
+      padding: 18px 16px 6px;
+    }
+    .sejarah-title{
+      margin: 0;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+      font-weight: 900;
+      font-size: clamp(22px, 2.4vw, 30px);
+      color: rgba(255,255,255,.94);
+      letter-spacing: -0.2px;
+    }
+    .sejarah-desc{
+      margin: 8px 0 0;
+      color: rgba(255,255,255,.72);
+      font-weight: 600;
+      line-height: 1.7;
+      max-width: 980px;
+      font-family: "Poppins", Inter, system-ui, sans-serif;
+    }
+
+    .sejarah-timeline{ flex: 1; min-height: 0; display:flex; }
+
+    .sejarah-track{
+      --line-pad: 16px;
+      --line-y: 46px;
+      --line-h: 4px;
+      --prog: 0px;
+
+      flex: 1;
+      min-height: 0;
+      display:flex;
+      align-items: center;
+      gap: 18px;
+      overflow-x: auto;
+      padding: 18px 16px 92px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scroll-behavior: smooth;
+
+      background:
+        linear-gradient(rgba(255,255,255,.20), rgba(255,255,255,.20))
+          bottom var(--line-y) left var(--line-pad) / calc(100% - (var(--line-pad) * 2)) var(--line-h) no-repeat,
+        linear-gradient(var(--ref-primary), var(--ref-primary))
+          bottom var(--line-y) left var(--line-pad) / var(--prog) var(--line-h) no-repeat;
+    }
+    .sejarah-track{ scrollbar-width: none; }
+    .sejarah-track::-webkit-scrollbar{ height: 0; width: 0; }
+
+    .sejarah-item{
+      position: relative;
+      flex: 0 0 min(860px, 88vw);
+      scroll-snap-align: start;
+      padding-bottom: 60px;
+
+      opacity: .62;
+      transform: scale(.985);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .sejarah-item.is-active{ opacity: 1; transform: scale(1); }
+    .sejarah-item.is-past{ opacity: .82; }
+    .sejarah-item.is-future{ opacity: .55; }
+
+    .sejarah-card{
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+      backdrop-filter: blur(10px);
+      min-height: clamp(260px, 58vh, 520px);
+      display:flex;
+      transition: background .25s ease, border-color .25s ease;
+    }
+    .sejarah-item.is-active .sejarah-card{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .sejarah-body{
+      font-family:"Poppins", Inter, system-ui, sans-serif;
+      color: rgba(255,255,255,.86);
+      font-weight: 600;
+      line-height: 1.75;
+      font-size: 16px;
+    }
+    .sejarah-body p{ margin: 0 0 10px; }
+    .sejarah-body p:last-child{ margin-bottom: 0; }
+
+    .sejarah-marker{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 26px;
+      width: 4px;
+      height: 56px;
+      background: rgba(255,255,255,.22);
+      border-radius: 999px;
+    }
+    .sejarah-marker::after{
+      content:"";
+      position:absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 18px;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.22);
+      border: 3px solid rgba(255,255,255,.80);
+    }
+    .sejarah-item.is-past .sejarah-marker,
+    .sejarah-item.is-active .sejarah-marker{
+      background: var(--ref-primary);
+      box-shadow: 0 12px 28px rgba(4,107,210,.25);
+    }
+    .sejarah-item.is-past .sejarah-marker::after,
+    .sejarah-item.is-active .sejarah-marker::after{
+      background: var(--ref-primary);
+      box-shadow: 0 10px 24px rgba(4,107,210,.25);
+    }
+
+    .sejarah-year-label{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      font-family:"Poppins", Inter, system-ui, sans-serif;
+      font-weight: 900;
+      font-size: clamp(26px, 3vw, 42px);
+      color: rgba(255,255,255,.92);
+      letter-spacing: .3px;
+
+      opacity: .60;
+      transition: opacity .25s ease;
+      user-select: none;
+    }
+    .sejarah-item.is-past .sejarah-year-label{ opacity: .82; }
+    .sejarah-item.is-active .sejarah-year-label{ opacity: 1; }
   </style>
 </head>
 
@@ -1181,9 +1420,14 @@
         <li><a href="#about">Tentang</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#kompetensi">Identitas</a></li>
-        <li><a href="#programs">Filosofi</a></li>
+
+        <!-- (BARU) Sejarah di desktop nav -->
+        <li><button type="button" class="nav-desktop-btn" id="openSejarahBtnDesktop">Sejarah</button></li>
+
+        <!-- Filosofi dihapus dari menu desktop -->
       </ul>
 
+      <!-- Hamburger tetap ada, tapi hanya tampil di HP via CSS -->
       <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileDrawer">
         Menu <span aria-hidden="true">☰</span>
       </button>
@@ -1199,8 +1443,13 @@
         <li><a href="#testimoni">Testimoni</a></li>
         <li><a href="#about">Tentang</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#kompetensi">Identitas</a></li>
-        <li><a href="#programs">Filosofi</a></li>
+
+        <!-- (BARU) Identitas mobile diganti menjadi Sejarah (overlay) -->
+        <li>
+          <button type="button" class="mobile-drawer-btn" id="openSejarahBtn">Sejarah</button>
+        </li>
+
+        <!-- Filosofi dihapus dari menu mobile -->
       </ul>
     </nav>
   </header>
@@ -1570,6 +1819,7 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
         </p>
       </div>
 
+      <!-- (sesuai permintaan) tetap balok asli -->
       <div class="fade-slide-in card bg-slate-100 border-dashed border-2 flex items-center justify-center h-64">
         <span class="text-slate-400 font-medium italic">Fekri2020 Alfat</span>
       </div>
@@ -1721,6 +1971,119 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
     </div>
   </div>
 
+  <!-- ===== SEJARAH: Overlay Fullscreen (BARU) ===== -->
+  <div id="sejarahPage" class="sejarah-overlay" aria-hidden="true">
+    <div class="sejarah-topbar">
+      <button id="sejarahBackBtn" class="sejarah-back" type="button">
+        <span aria-hidden="true">←</span> Kembali
+      </button>
+
+      <div class="sejarah-topbar-title" title="Sejarah Fekri2020 Alfat">
+        Sejarah Fekri2020 Alfat
+      </div>
+
+      <div style="width: 78px;" aria-hidden="true"></div>
+    </div>
+
+    <div class="sejarah-content">
+      <div class="sejarah-header">
+        <h2 class="sejarah-title">Sejarah Fekri2020 Alfat</h2>
+        <p class="sejarah-desc">Setiap langkah kami menandai perjalanan yang penuh makna dan cerita.</p>
+      </div>
+
+      <div class="sejarah-timeline" aria-label="Timeline Sejarah Fekri2020 Alfat">
+        <div class="sejarah-track" id="sejarahTrack">
+
+          <article class="sejarah-item">
+            <div class="sejarah-card">
+              <div class="sejarah-body">
+                <p>Fekri2020 Alfat memulai perjalanannya pada 28 Desember 2019, dengan video pertamanya yang berjudul “Rahasia Restoran Yang Disembunyikan Kepada Pelanggan”.</p>
+                <p>Channel ini lahir dari hobi membuat video, sebagai sarana menyalurkan kreativitas sekaligus berbagi konten menarik kepada penonton.</p>
+              </div>
+            </div>
+            <div class="sejarah-marker" aria-hidden="true"></div>
+            <div class="sejarah-year-label">2019</div>
+          </article>
+
+          <article class="sejarah-item">
+            <div class="sejarah-card">
+              <div class="sejarah-body">
+                <p>Tahun dimana kami cukup aktif membuat konten YouTube yang bervariasi dan menarik.</p>
+              </div>
+            </div>
+            <div class="sejarah-marker" aria-hidden="true"></div>
+            <div class="sejarah-year-label">2020</div>
+          </article>
+
+          <article class="sejarah-item">
+            <div class="sejarah-card">
+              <div class="sejarah-body">
+                <p>Pada 6 Juli 2021, kami mungunggah foto pertama kami setelah membuat toko Shutterstock untuk menawarkan beberapa hasil fotografi Fekri2020 Alfat.</p>
+              </div>
+            </div>
+            <div class="sejarah-marker" aria-hidden="true"></div>
+            <div class="sejarah-year-label">2021</div>
+          </article>
+
+          <article class="sejarah-item">
+            <div class="sejarah-card">
+              <div class="sejarah-body">
+                <p>Pada 23 Desember 2022, kami melakukan promosi pertama pada produk kami setelah membuat toko Spring (Sebelumnya Teespring) untuk menjual berbagai Merchandise resmi Fekri2020 Alfat.</p>
+              </div>
+            </div>
+            <div class="sejarah-marker" aria-hidden="true"></div>
+            <div class="sejarah-year-label">2022</div>
+          </article>
+
+          <article class="sejarah-item">
+            <div class="sejarah-card">
+              <div class="sejarah-body">
+                <p>Kami aktif mengunggah konten kreatif kami melalui kanal YouTube Fekri2020 Alfat.</p>
+              </div>
+            </div>
+            <div class="sejarah-marker" aria-hidden="true"></div>
+            <div class="sejarah-year-label">2023</div>
+          </article>
+
+          <article class="sejarah-item">
+            <div class="sejarah-card">
+              <div class="sejarah-body">
+                <p>Pada 13 Nov 2024, kami membuat blog pertama kami dengan nama Surabaya Transport System di Blogger.</p>
+              </div>
+            </div>
+            <div class="sejarah-marker" aria-hidden="true"></div>
+            <div class="sejarah-year-label">2024</div>
+          </article>
+
+          <article class="sejarah-item">
+            <div class="sejarah-card">
+              <div class="sejarah-body">
+                <p>Pada 17 Juni 2025 kami mengganti konsep blog kami menjadi blog berita tentang Update Terbaru dari Fekri2020 Alfat.</p>
+                <p>Pada 18 Juni 2025, kami melebarkan sayap melalui platform LinkTree sehingga dapat membantu penonton untuk mengunjungi berbagai ekosistem Fekri2020 Alfat.</p>
+              </div>
+            </div>
+            <div class="sejarah-marker" aria-hidden="true"></div>
+            <div class="sejarah-year-label">2025</div>
+          </article>
+
+          <article class="sejarah-item">
+            <div class="sejarah-card">
+              <div class="sejarah-body">
+                <p>10 Januari 2026, kami meresmikan website Fekri2020 Alfat. Inilah cikal bakal slogan Fekri2020 Alffat yakni Konten Kreatif Dalam Satu Channel muncul.</p>
+                <p>Tak lama setelah itu, website berita Fekri2020 Alfat ini pun diluncurkan pada 13 Februari 2026 dan cukup rutin memperbarui sistem.</p>
+                <p>Lalu 26 April 2026, Fekri Magazine edisi perdana diresmikan. Dan muali saat ituu Instagram kamu sangat aktif dan diperbarui tampilannya.</p>
+                <p>Di tahun inilah ekosistem Fekri2020 Alfat sangat berkembang pesat.</p>
+              </div>
+            </div>
+            <div class="sejarah-marker" aria-hidden="true"></div>
+            <div class="sejarah-year-label">2026</div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== Footer ===== -->
   <footer class="bg-slate-900 text-slate-300 py-10 text-sm">
     <div class="container footer-inner">
@@ -1765,9 +2128,10 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
     let magModalOpen = false;
     let magReaderOpen = false;
     let blogReaderOpen = false;
+    let sejarahOpen = false; // (BARU)
 
     function syncBodyOverflow() {
-      const locked = articleModalOpen || magModalOpen || magReaderOpen || blogReaderOpen;
+      const locked = articleModalOpen || magModalOpen || magReaderOpen || blogReaderOpen || sejarahOpen;
       document.body.style.overflow = locked ? "hidden" : "auto";
     }
 
@@ -1909,13 +2273,6 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
 
     blogBackBtn?.addEventListener("click", closeBlogReader);
 
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        if (blogReaderOpen) closeBlogReader();
-        if (magReaderOpen) closeMagazineReader();
-      }
-    });
-
     // =========================================================
     // Render FEKRINEWS dari newsSource:
     // tampil 4 kartu (sesuai source), tombol "Lihat Semua Artikel" buka blog overlay
@@ -1961,7 +2318,6 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
         item.dataset.date = date;
         item.dataset.full = full;
 
-        // (kalau nanti source > 4, tetap aman)
         if (idx >= 4) item.classList.add("is-hidden");
 
         item.innerHTML = `
@@ -1978,7 +2334,6 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
 
       grid.appendChild(frag);
 
-      // tombol selalu ada dan membuka Blog
       if (showAllWrap && showAllBtn) {
         showAllWrap.hidden = false;
         showAllBtn.onclick = () => openBlogReader();
@@ -2182,11 +2537,117 @@ Bagi masyarakat yang ingin melihat atau memiliki koleksi eksklusif ini, katalog 
     });
 
     magEdition1Btn?.addEventListener("click", () => {
-      closeMagazineModal();     // tutup pilihan edisi
-      openMagazineReader();     // buka reader putih
+      closeMagazineModal();
+      openMagazineReader();
     });
 
     magReaderBackBtn?.addEventListener("click", closeMagazineReader);
+
+    // =========================================================
+    // SEJARAH overlay open/close (BARU)
+    // =========================================================
+    const sejarahPage = document.getElementById("sejarahPage");
+    const openSejarahBtn = document.getElementById("openSejarahBtn"); // mobile
+    const openSejarahBtnDesktop = document.getElementById("openSejarahBtnDesktop"); // desktop
+    const sejarahBackBtn = document.getElementById("sejarahBackBtn");
+
+    function openSejarah() {
+      if (!sejarahPage) return;
+
+      sejarahOpen = true;
+      sejarahPage.style.display = "flex";
+      sejarahPage.setAttribute("aria-hidden", "false");
+      syncBodyOverflow();
+
+      // tutup drawer jika terbuka (HP)
+      setNavOpen(false);
+
+      // selalu kembali ke 2019 (paling kiri)
+      const track = document.getElementById("sejarahTrack");
+      if (track) {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        requestAnimationFrame(() => {
+          track.scrollTo({ left: 0, behavior: reduced ? "auto" : "smooth" });
+          track._sejarahUpdate && track._sejarahUpdate();
+        });
+      }
+    }
+
+    function closeSejarah() {
+      if (!sejarahPage) return;
+
+      sejarahOpen = false;
+      sejarahPage.style.display = "none";
+      sejarahPage.setAttribute("aria-hidden", "true");
+      syncBodyOverflow();
+    }
+
+    openSejarahBtn?.addEventListener("click", openSejarah);
+    openSejarahBtnDesktop?.addEventListener("click", openSejarah);
+    sejarahBackBtn?.addEventListener("click", closeSejarah);
+
+    // =========================================================
+    // Escape key (update) - tambah close sejarah
+    // =========================================================
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (blogReaderOpen) closeBlogReader();
+        if (magReaderOpen) closeMagazineReader();
+        if (sejarahOpen) closeSejarah();
+      }
+    });
+
+    // =========================================================
+    // SEJARAH progress line + active state (BARU)
+    // =========================================================
+    function initSejarahProgress() {
+      const track = document.getElementById("sejarahTrack");
+      if (!track) return;
+
+      let raf = null;
+
+      function update() {
+        raf = null;
+        const items = [...track.querySelectorAll(".sejarah-item")];
+        if (!items.length) return;
+
+        const pad = 16; // sama dengan --line-pad
+        const center = track.scrollLeft + track.clientWidth / 2;
+
+        let active = items[0];
+        let bestDist = Infinity;
+
+        items.forEach(it => {
+          const itCenter = it.offsetLeft + it.offsetWidth / 2;
+          const d = Math.abs(itCenter - center);
+          if (d < bestDist) { bestDist = d; active = it; }
+        });
+
+        const activeCenter = active.offsetLeft + active.offsetWidth / 2;
+
+        const prog = Math.max(0, activeCenter - pad);
+        track.style.setProperty("--prog", `${prog}px`);
+
+        items.forEach(it => {
+          const itCenter = it.offsetLeft + it.offsetWidth / 2;
+
+          it.classList.remove("is-active", "is-past", "is-future");
+          if (it === active) it.classList.add("is-active");
+          else if (itCenter < activeCenter) it.classList.add("is-past");
+          else it.classList.add("is-future");
+        });
+      }
+
+      function onScroll() {
+        if (raf) return;
+        raf = requestAnimationFrame(update);
+      }
+
+      track.addEventListener("scroll", onScroll, { passive: true });
+      update();
+      track._sejarahUpdate = update;
+    }
+    window.addEventListener("DOMContentLoaded", initSejarahProgress);
   </script>
 
   <!-- Instagram embed script (sekali saja) -->
